@@ -3,4 +3,8 @@
     <string name="own_image">owl_image</string>
     <string name="downloading_please_wait">Downloading, please wait...</string>
     <string name="fab">fab</string>
+    <string name="empty_list_msg">EmojiPhrase list is empty, please add emojiPhrase by clicking the button below</string>
+    <string name="emoji">Enter emoji</string>
+    <string name="phrase">Enter phrase</string>
+    <string name="godday_okos">godday_okos</string>
 </resources>
