@@ -11,8 +11,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val imageView = findViewById<ImageView>(R.id.image_view)
-        val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
-        val waitingMsg = findViewById<TextView>(R.id.wait_message)
     }
 }
