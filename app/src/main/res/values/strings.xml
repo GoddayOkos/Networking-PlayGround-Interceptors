@@ -2,4 +2,5 @@
     <string name="app_name">NetworkingClass</string>
     <string name="own_image">owl_image</string>
     <string name="downloading_please_wait">Downloading, please wait...</string>
+    <string name="fab">fab</string>
 </resources>
