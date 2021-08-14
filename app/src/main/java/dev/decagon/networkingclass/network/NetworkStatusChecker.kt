@@ -5,7 +5,7 @@ import android.net.NetworkCapabilities
 
 class NetworkStatusChecker(
     private val connectivityManager: ConnectivityManager?,
-    val onNoConnection: () -> Unit
+    val onNoInternetConnectionFound: () -> Unit
 ) {
 
     /**
@@ -15,7 +15,7 @@ class NetworkStatusChecker(
         if (hasInternetConnection()) {
             action()
         } else {
-            onNoConnection()
+            onNoInternetConnectionFound()
         }
     }
 

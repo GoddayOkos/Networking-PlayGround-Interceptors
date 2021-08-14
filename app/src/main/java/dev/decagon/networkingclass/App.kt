@@ -28,7 +28,6 @@ class App : Application() {
         private val apiService by lazy { buildApiService() }
 
         val remoteApi by lazy { RemoteApi(apiService) }
-
     }
 
     override fun onCreate() {

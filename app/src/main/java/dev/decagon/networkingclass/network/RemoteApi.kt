@@ -1,15 +1,17 @@
 package dev.decagon.networkingclass.network
 
+import android.util.Log
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.request.UserDataRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
 import dev.decagon.networkingclass.model.response.LoginResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-//const val BASE_URL = "https://emojiphraseapp.herokuapp.com"
-const val BASE_URL = "localhost:8080"
+const val BASE_URL = "https://emojiphraseapp.herokuapp.com"
+//const val BASE_URL = "http://192.168.0.158:8080"
 
 class RemoteApi(private val apiService: RemoteApiService) {
 
@@ -18,12 +20,18 @@ class RemoteApi(private val apiService: RemoteApiService) {
         onError: (String) -> Unit,
         onUserSignedIn: (String) -> Unit
     ) {
-        apiService.loginUser(userDataRequest).enqueue(object : Callback<LoginResponse> {
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("userId", userDataRequest.userId)
+            .addFormDataPart("password", userDataRequest.password)
+            .build()
+
+        apiService.loginUser(requestBody).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val signedInResponse = response.body()
 
                 if (signedInResponse == null || signedInResponse.token.isEmpty()) {
-                    onError("No response, please ensure you entered valid credentials")
+                    onError("Invalid user, please ensure you entered correct credentials")
                 } else {
                     onUserSignedIn(signedInResponse.token)
                 }
