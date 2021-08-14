@@ -19,7 +19,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.decagon.networkingclass.App
 import dev.decagon.networkingclass.R
+import dev.decagon.networkingclass.adapter.EmojiPhrasesAdapter
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
+import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var emptyListMsg: TextView
     private lateinit var alertDialog: AlertDialog
+    private lateinit var emojiPhrases: List<EmojiPhraseResponse>
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -38,11 +41,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val remoteApi = App.remoteApi
+    private val adapter by lazy { EmojiPhrasesAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initViews()
     }
 
@@ -64,12 +67,15 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         title = "EmojiPhrases"
         recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.adapter = adapter
         swipeContainer = findViewById(R.id.swipe_container)
-        fab = findViewById(R.id.fab)
+
         progressBar = findViewById(R.id.progress_bar)
         emptyListMsg = findViewById(R.id.empty_list_text)
 
+        fab = findViewById(R.id.fab)
         fab.setOnClickListener { showAddEmojiPhrasesDialog() }
+        getEmojiPhrases()
     }
 
     private fun showAddEmojiPhrasesDialog() {
@@ -103,7 +109,12 @@ class MainActivity : AppCompatActivity() {
 
                 } else {
                     Snackbar.make(swipeContainer, "Fields must not be empty!", Snackbar.LENGTH_LONG)
-                        .setBackgroundTint(resources.getColor(R.color.design_default_color_error, null))
+                        .setBackgroundTint(
+                            resources.getColor(
+                                R.color.design_default_color_error,
+                                null
+                            )
+                        )
                         .show()
                 }
 
@@ -113,5 +124,13 @@ class MainActivity : AppCompatActivity() {
     private fun onError(message: String) {
         progressBar.visibility = View.GONE
         Snackbar.make(swipeContainer, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun getEmojiPhrases() {
+        remoteApi.getEmojiPhrases(::onError) {
+            adapter.submitList(it)
+            if (adapter.itemCount == 0) emptyListMsg.visibility =
+                View.VISIBLE else emptyListMsg.visibility = View.GONE
+        }
     }
 }

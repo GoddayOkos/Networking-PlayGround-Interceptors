@@ -21,11 +21,11 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                app:cardCornerRadius="40dp"
+                app:cardCornerRadius="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -61,7 +61,7 @@
             android:textStyle="bold"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="7dp"
-            android:textSize="17sp" />
+            android:textSize="20sp" />
 
 
         <TextView
@@ -83,30 +83,16 @@
             android:layout_marginBottom="7dp"
             android:weightSum="6">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:src="@drawable/thumbs_up" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:layout_marginStart="15dp"
-                android:src="@drawable/favorite" />
-
             <TextView
                 android:id="@+id/comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="4"
-                android:gravity="end|center"
+                android:layout_weight="6"
+
                 android:padding="4dp"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="#89000000"
-                android:textStyle="italic"
                 tools:text="random quote" />
 
         </LinearLayout>
