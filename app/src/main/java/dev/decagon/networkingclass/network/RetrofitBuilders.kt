@@ -24,7 +24,7 @@ fun buildAuthorizationInterceptor() = object : Interceptor {
         if (App.getToken().isBlank()) return chain.proceed(originalRequest)
 
         val newRequest = originalRequest.newBuilder()
-            .addHeader(HEADER_AUTHORIZATION, App.getToken())
+            .addHeader(HEADER_AUTHORIZATION, "Bearer ${App.getToken()}")
             .build()
 
         return chain.proceed(newRequest)

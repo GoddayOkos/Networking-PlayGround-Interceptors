@@ -102,8 +102,9 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 } else {
-                    emojiInput.error = "This field must not be empty"
-                    phraseInput.error = "This field must not be empty"
+                    Snackbar.make(swipeContainer, "Fields must not be empty!", Snackbar.LENGTH_LONG)
+                        .setBackgroundTint(resources.getColor(R.color.design_default_color_error, null))
+                        .show()
                 }
 
             }.show()
