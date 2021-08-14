@@ -11,8 +11,8 @@
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.19912985274431058" />
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.20355191256830601" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/recycler_view_items.xml" value="0.25" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.22760416666666666" />
       </map>
