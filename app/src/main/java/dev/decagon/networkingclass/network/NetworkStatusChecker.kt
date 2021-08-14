@@ -3,7 +3,10 @@ package dev.decagon.networkingclass.network
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
-class NetworkStatusChecker(private val connectivityManager: ConnectivityManager?) {
+class NetworkStatusChecker(
+    private val connectivityManager: ConnectivityManager?,
+    val onNoConnection: () -> Unit
+) {
 
     /**
      * Checks the Internet connection and performs an action if it's active.
@@ -11,6 +14,8 @@ class NetworkStatusChecker(private val connectivityManager: ConnectivityManager?
     inline fun performIfConnectedToInternet(action: () -> Unit) {
         if (hasInternetConnection()) {
             action()
+        } else {
+            onNoConnection()
         }
     }
 
