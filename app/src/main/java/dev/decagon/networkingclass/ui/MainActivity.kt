@@ -1,14 +1,12 @@
-package dev.decagon.networkingclass
+package dev.decagon.networkingclass.ui
 
 import android.os.Bundle
-import android.os.Message
-import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dev.decagon.networkingclass.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -20,10 +18,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = "EmojiPhrases"
+        initViews()
     }
 
     private fun initViews() {
+        title = "EmojiPhrases"
         recyclerView = findViewById(R.id.recycler_view)
         swipeContainer = findViewById(R.id.swipe_container)
         fab = findViewById(R.id.fab)

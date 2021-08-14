@@ -1,7 +1,8 @@
-package dev.decagon.networkingclass
+package dev.decagon.networkingclass.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dev.decagon.networkingclass.R
 
 class LoginActivity : AppCompatActivity() {
 
