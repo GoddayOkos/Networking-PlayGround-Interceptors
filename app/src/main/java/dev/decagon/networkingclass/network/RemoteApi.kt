@@ -1,6 +1,5 @@
 package dev.decagon.networkingclass.network
 
-import android.util.Log
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.request.UserDataRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
@@ -83,10 +82,14 @@ class RemoteApi(private val apiService: RemoteApiService) {
             ) {
                 val data = response.body()
 
-                if (!data.isNullOrEmpty()) {
-                    onEmojiPhrasesReceived(data)
+                if (data != null) {
+                    if (data.isNotEmpty()) {
+                        onEmojiPhrasesReceived(data)
+                    } else {
+                        onEmojiPhrasesReceived(emptyList())
+                    }
                 } else {
-                    onError("No emoji phrases available for this user!")
+                    onError("No emoji phrases to display!")
                 }
             }
 

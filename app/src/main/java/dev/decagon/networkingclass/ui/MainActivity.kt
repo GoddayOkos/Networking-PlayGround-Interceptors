@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var emptyListMsg: TextView
     private lateinit var alertDialog: AlertDialog
-    private lateinit var emojiPhrases: List<EmojiPhraseResponse>
 
     companion object {
         fun getIntent(context: Context): Intent {
@@ -69,6 +68,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.adapter = adapter
         swipeContainer = findViewById(R.id.swipe_container)
+        swipeContainer.setColorSchemeColors(
+            resources.getColor(android.R.color.holo_blue_bright, null),
+            resources.getColor(android.R.color.holo_green_light, null),
+            resources.getColor(android.R.color.holo_orange_light, null),
+            resources.getColor(android.R.color.holo_red_light, null)
+        )
+        swipeContainer.setOnRefreshListener { getEmojiPhrases() }
 
         progressBar = findViewById(R.id.progress_bar)
         emptyListMsg = findViewById(R.id.empty_list_text)
@@ -93,18 +99,18 @@ class MainActivity : AppCompatActivity() {
                 val phrase = phraseInput.text.toString()
 
                 if (emoji.isNotBlank() && phrase.isNotBlank()) {
-                    progressBar.visibility = View.VISIBLE
+                    swipeContainer.isRefreshing = true
                     val emojiPhrase = EmojiPhraseRequest(emoji, phrase)
                     remoteApi.addEmojiPhrases(
                         emojiPhrase,
                         ::onError
                     ) {
-                        progressBar.visibility = View.GONE
                         Snackbar.make(
                             swipeContainer,
-                            "New emojiPhrase added! by ${it.userId}",
+                            "New emojiPhrase added!\uD83D\uDC4F \uD83D\uDE04",
                             Snackbar.LENGTH_LONG
                         ).show()
+                        getEmojiPhrases()
                     }
 
                 } else {
@@ -122,15 +128,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onError(message: String) {
-        progressBar.visibility = View.GONE
+        swipeContainer.isRefreshing = false
         Snackbar.make(swipeContainer, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun getEmojiPhrases() {
+        swipeContainer.isRefreshing = true
         remoteApi.getEmojiPhrases(::onError) {
+            swipeContainer.isRefreshing = false
             adapter.submitList(it)
-            if (adapter.itemCount == 0) emptyListMsg.visibility =
-                View.VISIBLE else emptyListMsg.visibility = View.GONE
+            if (it.isEmpty()) {
+                emptyListMsg.visibility = View.VISIBLE
+            } else {
+                emptyListMsg.visibility = View.GONE
+            }
         }
     }
 }

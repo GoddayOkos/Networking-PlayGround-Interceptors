@@ -20,11 +20,13 @@ class EmojiPhrasesAdapter :
         private val phrase = view.findViewById<TextView>(R.id.title)
         private val emoji = view.findViewById<TextView>(R.id.comment)
         private val randomQuote = view.findViewById<TextView>(R.id.post)
-        private val userImage = view.findViewById<ImageView>(R.id.profileImage)
+        private val userImage: ImageView = view.findViewById(R.id.profileImage)
 
         fun onBind(emojiPhrase: EmojiPhraseResponse) {
             if (emojiPhrase.userId == "GoddayOkos") {
-                userImage.setImageResource(R.drawable.godday_okos)
+               userImage.setImageResource(R.drawable.godday_okos)
+            } else {
+                userImage.setImageResource(R.drawable.avatar)
             }
 
             val quote = QuoteGenerator.getQuote(emojiPhrase.id.toInt())
