@@ -36,11 +36,6 @@ class LoginActivity : AppCompatActivity() {
     private val remoteApi = App.remoteApi
     private val networkStatusChecker by lazy {
         NetworkStatusChecker(getSystemService(ConnectivityManager::class.java)) {
-//            Snackbar.make(
-//                signInButton,
-//                "No internet connection! Please turn on your internet and try again.",
-//                Snackbar.LENGTH_LONG
-//            ).show()
             showLoginError("No internet connection! Please turn on your internet and try again.")
         }
     }
