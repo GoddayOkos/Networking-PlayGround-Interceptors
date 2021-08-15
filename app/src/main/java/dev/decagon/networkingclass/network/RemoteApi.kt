@@ -83,11 +83,7 @@ class RemoteApi(private val apiService: RemoteApiService) {
                 val data = response.body()
 
                 if (data != null) {
-                    if (data.isNotEmpty()) {
-                        onEmojiPhrasesReceived(data)
-                    } else {
-                        onEmojiPhrasesReceived(emptyList())
-                    }
+                    onEmojiPhrasesReceived(data)
                 } else {
                     onError("No emoji phrases to display!")
                 }

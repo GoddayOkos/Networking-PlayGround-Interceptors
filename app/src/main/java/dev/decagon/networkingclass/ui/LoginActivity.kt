@@ -56,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
+        title = "Sign In"
         usernameInput = findViewById(R.id.username)
         passwordInput = findViewById(R.id.password)
         signInButton = findViewById(R.id.sign_in)

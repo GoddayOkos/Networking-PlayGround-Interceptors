@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         Snackbar.make(
                             swipeContainer,
-                            "New emojiPhrase added!\uD83D\uDC4F \uD83D\uDE04",
+                            "New emojiPhrase added!\uD83D\uDC4F\uD83D\uDE04",
                             Snackbar.LENGTH_LONG
                         ).show()
                         getEmojiPhrases()

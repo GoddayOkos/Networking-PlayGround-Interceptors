@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 private const val HEADER_AUTHORIZATION = "Authorization"
 
@@ -37,7 +37,7 @@ fun buildRetrofit(): Retrofit {
     return Retrofit.Builder()
         .client(buildClient())
         .baseUrl(BASE_URL)
-        .addConverterFactory(MoshiConverterFactory.create().asLenient())
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
 }
 
