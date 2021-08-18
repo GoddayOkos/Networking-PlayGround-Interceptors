@@ -2,6 +2,7 @@ package dev.decagon.networkingclass.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import dev.decagon.networkingclass.R
 import dev.decagon.networkingclass.adapter.EmojiPhrasesAdapter
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
+import dev.decagon.networkingclass.network.NetworkStatusChecker
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -40,6 +42,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val remoteApi = App.remoteApi
+    private val networkStatusChecker by lazy {
+        NetworkStatusChecker(getSystemService(ConnectivityManager::class.java)) {
+            onError("No internet connection! Please turn on your internet and try again.")
+        }
+    }
     private val adapter by lazy { EmojiPhrasesAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,20 +106,21 @@ class MainActivity : AppCompatActivity() {
                 val phrase = phraseInput.text.toString()
 
                 if (emoji.isNotBlank() && phrase.isNotBlank()) {
-                    swipeContainer.isRefreshing = true
-                    val emojiPhrase = EmojiPhraseRequest(emoji, phrase)
-                    remoteApi.addEmojiPhrases(
-                        emojiPhrase,
-                        ::onError
-                    ) {
-                        Snackbar.make(
-                            swipeContainer,
-                            "New emojiPhrase added!\uD83D\uDC4F\uD83D\uDE04",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        getEmojiPhrases()
+                    networkStatusChecker.performIfConnectedToInternet {
+                        swipeContainer.isRefreshing = true
+                        val emojiPhrase = EmojiPhraseRequest(emoji, phrase)
+                        remoteApi.addEmojiPhrases(
+                            emojiPhrase,
+                            ::onError
+                        ) {
+                            Snackbar.make(
+                                swipeContainer,
+                                "New emojiPhrase added!\uD83D\uDC4F\uD83D\uDE04",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                            getEmojiPhrases()
+                        }
                     }
-
                 } else {
                     Snackbar.make(swipeContainer, "Fields must not be empty!", Snackbar.LENGTH_LONG)
                         .setBackgroundTint(
@@ -133,14 +141,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getEmojiPhrases() {
-        swipeContainer.isRefreshing = true
-        remoteApi.getEmojiPhrases(::onError) {
-            swipeContainer.isRefreshing = false
-            adapter.submitList(it)
-            if (it.isEmpty()) {
-                emptyListMsg.visibility = View.VISIBLE
-            } else {
-                emptyListMsg.visibility = View.GONE
+        networkStatusChecker.performIfConnectedToInternet {
+            swipeContainer.isRefreshing = true
+            remoteApi.getEmojiPhrases(::onError) {
+                swipeContainer.isRefreshing = false
+                adapter.submitList(it)
+                if (it.isEmpty()) {
+                    emptyListMsg.visibility = View.VISIBLE
+                } else {
+                    emptyListMsg.visibility = View.GONE
+                }
             }
         }
     }

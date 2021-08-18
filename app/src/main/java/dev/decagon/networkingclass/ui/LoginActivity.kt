@@ -79,14 +79,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun signInUser(userDataRequest: UserDataRequest) {
-        remoteApi.signInUser(
-            userDataRequest = userDataRequest,
-            onError = ::showLoginError
-        ) {
-            errorText.visibility = View.GONE
-            loading.visibility = View.GONE
-            App.saveToken(it)
-            startActivity(MainActivity.getIntent(this))
+        networkStatusChecker.performIfConnectedToInternet {
+            remoteApi.signInUser(
+                userDataRequest = userDataRequest,
+                onError = ::showLoginError
+            ) {
+                errorText.visibility = View.GONE
+                loading.visibility = View.GONE
+                App.saveToken(it)
+                startActivity(MainActivity.getIntent(this))
+            }
         }
     }
 }
