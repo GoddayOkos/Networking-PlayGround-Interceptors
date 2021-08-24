@@ -2,6 +2,7 @@ package dev.decagon.networkingclass.network
 
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.request.UserDataRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
@@ -127,27 +128,29 @@ class RemoteApi(private val apiService: RemoteApiService) {
 
     fun getEmojiPhrases(
         onError: (String) -> Unit,
-        onEmojiPhrasesReceived: (List<EmojiPhraseResponse>) -> Unit
+        onEmojiPhrasesReceived: (LiveData<MutableList<EmojiPhraseResponse>>) -> Unit
     ) {
-        fakeRetrofit().getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
-            override fun onResponse(
-                call: Call<List<EmojiPhraseResponse>>,
-                response: Response<List<EmojiPhraseResponse>>
-            ) {
-                val data = response.body()
+        onEmojiPhrasesReceived(getFakeEmojiPhrases())
+//        fakeRetrofit().getEmojiPhrases().enqueue(object : Callback<LiveData<MutableList<EmojiPhraseResponse>>> {
+//            override fun onResponse(
+//                call: Call<LiveData<MutableList<EmojiPhraseResponse>>>,
+//                response: Response<LiveData<MutableList<EmojiPhraseResponse>>>
+//            ) {
+//                val data = response.body()
+//
+//                if (data != null) {
+//                    onEmojiPhrasesReceived(data)
+//                } else {
+//                    onError("No emoji phrases to display!")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<LiveData<MutableList<EmojiPhraseResponse>>>, t: Throwable) {
+//                t.printStackTrace()
+//                onError(t.message.toString())
+//            }
 
-                if (data != null) {
-                    onEmojiPhrasesReceived(data)
-                } else {
-                    onError("No emoji phrases to display!")
-                }
-            }
-
-            override fun onFailure(call: Call<List<EmojiPhraseResponse>>, t: Throwable) {
-                onError(t.message.toString())
-            }
-
-        })
+ //       })
     }
 
     fun addEmojiPhrases(
@@ -155,26 +158,28 @@ class RemoteApi(private val apiService: RemoteApiService) {
         onError: (String) -> Unit,
         onEmojiRequestAdded: (emojiPhrase: EmojiPhraseResponse) -> Unit
     ) {
-        fakeRetrofit().addEmojiPhrase(emojiPhraseRequest)
-            .enqueue(object : Callback<EmojiPhraseResponse> {
-                override fun onResponse(
-                    call: Call<EmojiPhraseResponse>,
-                    response: Response<EmojiPhraseResponse>
-                ) {
-                    val data = response.body()
 
-                    if (data == null) {
-                        onError("No response!")
-                        return
-                    } else {
-                        onEmojiRequestAdded(data)
-                    }
-                }
-
-                override fun onFailure(call: Call<EmojiPhraseResponse>, t: Throwable) {
-                    onError(t.message.toString())
-                }
-
-            })
+        onEmojiRequestAdded(addFakeEmoji(emojiPhraseRequest))
+//        fakeRetrofit().addEmojiPhrase(emojiPhraseRequest)
+//            .enqueue(object : Callback<EmojiPhraseResponse> {
+//                override fun onResponse(
+//                    call: Call<EmojiPhraseResponse>,
+//                    response: Response<EmojiPhraseResponse>
+//                ) {
+//                    val data = response.body()
+//
+//                    if (data == null) {
+//                        onError("No response!")
+//                        return
+//                    } else {
+//                        onEmojiRequestAdded(data)
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<EmojiPhraseResponse>, t: Throwable) {
+//                    onError(t.message.toString())
+//                }
+//
+//            })
     }
 }

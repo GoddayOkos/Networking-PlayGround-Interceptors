@@ -74,7 +74,8 @@ class MainActivity : AppCompatActivity() {
             resources.getColor(android.R.color.holo_orange_light, null),
             resources.getColor(android.R.color.holo_red_light, null)
         )
-        swipeContainer.setOnRefreshListener { getEmojiPhrases() }
+   //     swipeContainer.setOnRefreshListener { getEmojiPhrases() }
+        swipeContainer.isEnabled = false
 
         progressBar = findViewById(R.id.progress_bar)
         emptyListMsg = findViewById(R.id.empty_list_text)
@@ -142,15 +143,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getEmojiPhrases() {
-        swipeContainer.isRefreshing = true
+      //  swipeContainer.isRefreshing = true
         remoteApi.getEmojiPhrases(::onError) {
-            swipeContainer.isRefreshing = false
-            adapter.submitList(it)
-            if (it.isEmpty()) {
-                emptyListMsg.visibility = View.VISIBLE
-            } else {
-                emptyListMsg.visibility = View.GONE
-            }
+     //       swipeContainer.isRefreshing = false
+            it.observe(this, { emojiPhraseList ->
+                adapter.submitList(emojiPhraseList)
+                if (emojiPhraseList.isEmpty()) {
+                    emptyListMsg.visibility = View.VISIBLE
+                } else {
+                    emptyListMsg.visibility = View.GONE
+                }
+            })
         }
     }
 
