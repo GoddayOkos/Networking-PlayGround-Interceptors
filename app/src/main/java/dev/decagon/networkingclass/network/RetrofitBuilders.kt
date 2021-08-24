@@ -41,5 +41,27 @@ fun buildRetrofit(): Retrofit {
         .build()
 }
 
+/**
+ * Mock OkHttpClient
+ */
+fun fakeClient(): OkHttpClient = OkHttpClient.Builder()
+    .addInterceptor(HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    })
+    .addInterceptor(SkipNetworkInterceptor())
+    .build()
+
+/**
+ * Mock Retrofit
+ */
+fun fakeRetrofit(): RemoteApiService {
+    return Retrofit.Builder()
+        .client(fakeClient())
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(RemoteApiService::class.java)
+}
+
 fun buildApiService(): RemoteApiService =
     buildRetrofit().create(RemoteApiService::class.java)

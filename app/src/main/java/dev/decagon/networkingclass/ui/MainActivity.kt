@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
         fab = findViewById(R.id.fab)
         fab.setOnClickListener { showAddEmojiPhrasesDialog() }
         getEmojiPhrases()
+
     }
 
     private fun showAddEmojiPhrasesDialog() {
@@ -99,8 +100,16 @@ class MainActivity : AppCompatActivity() {
                 val phrase = phraseInput.text.toString()
 
                 if (emoji.isNotBlank() && phrase.isNotBlank()) {
-                    swipeContainer.isRefreshing = true
+                //    swipeContainer.isRefreshing = true
                     val emojiPhrase = EmojiPhraseRequest(emoji, phrase)
+//                    remoteApi.addFakeEmojiPhrases(emojiPhrase)
+//
+//                    Snackbar.make(
+//                        swipeContainer,
+//                        "New emojiPhrase added!\uD83D\uDC4F\uD83D\uDE04",
+//                        Snackbar.LENGTH_LONG
+//                    ).show()
+
                     remoteApi.addEmojiPhrases(
                         emojiPhrase,
                         ::onError
@@ -110,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                             "New emojiPhrase added!\uD83D\uDC4F\uD83D\uDE04",
                             Snackbar.LENGTH_LONG
                         ).show()
-                        getEmojiPhrases()
+                      //  getEmojiPhrases()
                     }
 
                 } else {
@@ -144,4 +153,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//    private fun getEmojiPhrases() {
+//        swipeContainer.isRefreshing = true
+//        remoteApi.getFakeResult().also {
+//            swipeContainer.isRefreshing = false
+//            adapter.submitList(it)
+//            if (it.isEmpty()) {
+//                emptyListMsg.visibility = View.VISIBLE
+//            } else {
+//                emptyListMsg.visibility = View.GONE
+//            }
+//        }
+//    }
 }
