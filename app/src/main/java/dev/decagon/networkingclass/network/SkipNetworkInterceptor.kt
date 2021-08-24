@@ -3,6 +3,7 @@ package dev.decagon.networkingclass.network
 import com.google.gson.Gson
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
+import io.reactivex.rxjava3.kotlin.toObservable
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -77,7 +78,7 @@ class SkipNetworkInterceptor: Interceptor {
                 .request(request)
                 .protocol(Protocol.HTTP_1_1)
                 .message("OK")
-                .body(gson.toJson(fakeNetworkResults[0])
+                .body(gson.toJson(emojiPhraseResponse)
                     .toResponseBody("application/json".toMediaType()))
                 .build()
         } else {
