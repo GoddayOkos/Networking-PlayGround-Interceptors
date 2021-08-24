@@ -15,12 +15,6 @@ private val fakeNetworkResults = mutableListOf(
     ),
     EmojiPhraseResponse(
         id = 2, userId = "GoddayOkos", "\uD83C\uDF2C\uD83D\uDE04", "Mind Blown"
-    ),
-    EmojiPhraseResponse(
-        id = 3, userId = "GoddayOkos", "\uD83E\uDDCF\uD83C\uDFFD\u200D♂️", "If I hear"
-    ),
-    EmojiPhraseResponse(
-        id = 4, userId = "GoddayOkos", "\uD83D\uDC4F\uD83D\uDC4F\uD83D\uDC4F", "Clapping"
     )
 )
 
