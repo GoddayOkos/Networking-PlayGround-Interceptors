@@ -63,6 +63,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        if (remoteApi.addSubscription != null && !remoteApi.addSubscription!!.isUnsubscribed) {
+            remoteApi.addSubscription!!.unsubscribe()
+        }
+
+        if (remoteApi.getSubscription != null && !remoteApi.getSubscription!!.isUnsubscribed) {
+            remoteApi.getSubscription!!.unsubscribe()
+        }
+        super.onDestroy()
+    }
+
     private fun initViews() {
         title = "EmojiPhrases"
         recyclerView = findViewById(R.id.recycler_view)

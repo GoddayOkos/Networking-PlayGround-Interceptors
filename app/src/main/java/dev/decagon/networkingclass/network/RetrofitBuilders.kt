@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val HEADER_AUTHORIZATION = "Authorization"
@@ -58,6 +59,7 @@ fun fakeRetrofit(): RemoteApiService {
     return Retrofit.Builder()
         .client(fakeClient())
         .baseUrl(BASE_URL)
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(RemoteApiService::class.java)

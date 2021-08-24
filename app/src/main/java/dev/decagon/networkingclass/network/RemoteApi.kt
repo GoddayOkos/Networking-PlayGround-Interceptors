@@ -2,6 +2,7 @@ package dev.decagon.networkingclass.network
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.request.UserDataRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
@@ -10,12 +11,18 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import rx.Observer
+import rx.Subscription
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 const val BASE_URL = "https://emojiphraseapp.herokuapp.com"
 //const val BASE_URL = "http://192.168.0.158:8080"
 
 class RemoteApi(private val apiService: RemoteApiService) {
 
+    var getSubscription: Subscription? = null
+    var addSubscription: Subscription? = null
 //    private val fakeResults = mutableListOf(
 //        EmojiPhraseResponse(
 //        id = 1, userId = "GoddayOkos", "\uD83D\uDC4F", "Clapping for myself"
@@ -129,25 +136,43 @@ class RemoteApi(private val apiService: RemoteApiService) {
         onError: (String) -> Unit,
         onEmojiPhrasesReceived: (List<EmojiPhraseResponse>) -> Unit
     ) {
-        fakeRetrofit().getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
-            override fun onResponse(
-                call: Call<List<EmojiPhraseResponse>>,
-                response: Response<List<EmojiPhraseResponse>>
-            ) {
-                val data = response.body()
-
-                if (data != null) {
-                    onEmojiPhrasesReceived(data)
-                } else {
-                    onError("No emoji phrases to display!")
+        getSubscription = fakeRetrofit().getEmojiPhrases()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<List<EmojiPhraseResponse>> {
+                override fun onCompleted() {
+                   Log.d("RemoteApi", "onCompleted")
                 }
-            }
 
-            override fun onFailure(call: Call<List<EmojiPhraseResponse>>, t: Throwable) {
-                onError(t.message.toString())
-            }
+                override fun onError(e: Throwable) {
+                    onError(e.message!!)
+                }
 
-        })
+                override fun onNext(t: List<EmojiPhraseResponse>?) {
+                    t?.let(onEmojiPhrasesReceived)
+                }
+
+            })
+
+    //        .enqueue(object : Callback<List<EmojiPhraseResponse>> {
+//            override fun onResponse(
+//                call: Call<List<EmojiPhraseResponse>>,
+//                response: Response<List<EmojiPhraseResponse>>
+//            ) {
+//                val data = response.body()
+//
+//                if (data != null) {
+//                    onEmojiPhrasesReceived(data)
+//                } else {
+//                    onError("No emoji phrases to display!")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<List<EmojiPhraseResponse>>, t: Throwable) {
+//                onError(t.message.toString())
+//            }
+//
+//        })
     }
 
     fun addEmojiPhrases(
@@ -155,26 +180,42 @@ class RemoteApi(private val apiService: RemoteApiService) {
         onError: (String) -> Unit,
         onEmojiRequestAdded: (emojiPhrase: EmojiPhraseResponse) -> Unit
     ) {
-        fakeRetrofit().addEmojiPhrase(emojiPhraseRequest)
-            .enqueue(object : Callback<EmojiPhraseResponse> {
-                override fun onResponse(
-                    call: Call<EmojiPhraseResponse>,
-                    response: Response<EmojiPhraseResponse>
-                ) {
-                    val data = response.body()
-
-                    if (data == null) {
-                        onError("No response!")
-                        return
-                    } else {
-                        onEmojiRequestAdded(data)
-                    }
+        addSubscription = fakeRetrofit().addEmojiPhrase(emojiPhraseRequest)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<EmojiPhraseResponse> {
+                override fun onCompleted() {
+                    Log.d("RemoteApi", "onCompleted")
                 }
 
-                override fun onFailure(call: Call<EmojiPhraseResponse>, t: Throwable) {
-                    onError(t.message.toString())
+                override fun onError(e: Throwable) {
+                    onError(e.message!!)
+                }
+
+                override fun onNext(t: EmojiPhraseResponse?) {
+                    t?.let(onEmojiRequestAdded)
                 }
 
             })
+//            .enqueue(object : Callback<EmojiPhraseResponse> {
+//                override fun onResponse(
+//                    call: Call<EmojiPhraseResponse>,
+//                    response: Response<EmojiPhraseResponse>
+//                ) {
+//                    val data = response.body()
+//
+//                    if (data == null) {
+//                        onError("No response!")
+//                        return
+//                    } else {
+//                        onEmojiRequestAdded(data)
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<EmojiPhraseResponse>, t: Throwable) {
+//                    onError(t.message.toString())
+//                }
+//
+//            })
     }
 }
