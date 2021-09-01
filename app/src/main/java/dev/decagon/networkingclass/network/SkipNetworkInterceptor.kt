@@ -3,7 +3,6 @@ package dev.decagon.networkingclass.network
 import com.google.gson.Gson
 import dev.decagon.networkingclass.model.request.EmojiPhraseRequest
 import dev.decagon.networkingclass.model.response.EmojiPhraseResponse
-import io.reactivex.rxjava3.kotlin.toObservable
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
