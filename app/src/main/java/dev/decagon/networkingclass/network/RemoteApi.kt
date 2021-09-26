@@ -100,36 +100,11 @@ class RemoteApi(private val apiService: RemoteApiService) {
 //            })
 //    }
 
-//    fun getEmojiPhrases(
-//        onError: (String) -> Unit,
-//        onEmojiPhrasesReceived: (List<EmojiPhraseResponse>) -> Unit
-//    ) {
-//        apiService.getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
-//            override fun onResponse(
-//                call: Call<List<EmojiPhraseResponse>>,
-//                response: Response<List<EmojiPhraseResponse>>
-//            ) {
-//                val data = response.body()
-//
-//                if (data != null) {
-//                    onEmojiPhrasesReceived(data)
-//                } else {
-//                    onError("No emoji phrases to display!")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<EmojiPhraseResponse>>, t: Throwable) {
-//                onError(t.message.toString())
-//            }
-//
-//        })
-//    }
-
     fun getEmojiPhrases(
         onError: (String) -> Unit,
         onEmojiPhrasesReceived: (List<EmojiPhraseResponse>) -> Unit
     ) {
-        fakeRetrofit().getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
+        apiService.getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
             override fun onResponse(
                 call: Call<List<EmojiPhraseResponse>>,
                 response: Response<List<EmojiPhraseResponse>>
@@ -149,6 +124,31 @@ class RemoteApi(private val apiService: RemoteApiService) {
 
         })
     }
+
+//    fun getEmojiPhrases(
+//        onError: (String) -> Unit,
+//        onEmojiPhrasesReceived: (List<EmojiPhraseResponse>) -> Unit
+//    ) {
+//        fakeRetrofit().getEmojiPhrases().enqueue(object : Callback<List<EmojiPhraseResponse>> {
+//            override fun onResponse(
+//                call: Call<List<EmojiPhraseResponse>>,
+//                response: Response<List<EmojiPhraseResponse>>
+//            ) {
+//                val data = response.body()
+//
+//                if (data != null) {
+//                    onEmojiPhrasesReceived(data)
+//                } else {
+//                    onError("No emoji phrases to display!")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<List<EmojiPhraseResponse>>, t: Throwable) {
+//                onError(t.message.toString())
+//            }
+//
+//        })
+//    }
 
     fun addEmojiPhrases(
         emojiPhraseRequest: EmojiPhraseRequest,

@@ -18,4 +18,7 @@ interface RemoteApiService {
 
     @GET("/api/v1/phrases")
     fun getEmojiPhrases(): Call<List<EmojiPhraseResponse>>
+
+//    @GET("/assets/data.json")
+//    fun getEmojiPhrases(): Call<List<EmojiPhraseResponse>>
 }
